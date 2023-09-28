@@ -6,8 +6,10 @@ const contactsController = (socket, user) => {
   //For getting contacts data
   socket.on("get-contacts", async () => {
     try {
+      console.log("called get");
       let contacts = await ContactModel.findOne({ userId: user._id });
       socket.emit("receive-contacts", { data: contacts?.contacts || [] });
+      console.log("called receive");
     } catch (e) {
       socket.emit("error", { message: e.message });
     }

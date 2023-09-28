@@ -6,6 +6,7 @@ const contactsController = require("./ContactsController");
 const chatsController = require("./ChatsController");
 
 const socketController = async (socket) => {
+  console.log("socket connected");
   if (socket.handshake.query && socket.handshake.query.authToken) {
     let token = socket.handshake.query.authToken;
     token = token.replace("ChAp ", "");
@@ -27,6 +28,10 @@ const socketController = async (socket) => {
   } else {
     socket.emit("error", { message: "Authentication Failed!" });
   }
+  socket.on("disconnect", (socketId) => {
+    console.log("Disconnected", socketId);
+    socket.disconnect();
+  });
 };
 
 module.exports = socketController;
