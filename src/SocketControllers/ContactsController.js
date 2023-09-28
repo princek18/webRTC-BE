@@ -28,11 +28,18 @@ const contactsController = (socket, user) => {
         throw new Error("Can not add yourself!");
       }
       let contacts = await ContactModel.findOne({ userId: user._id });
-      let chat = await ChatModel.findOne({ user1: data.userName });
+      let chat = await ChatModel.findOne({
+        $or: [
+          { user1: user.userName, user2: data.userName },
+          { user1: data.userName, user2: user.userName },
+        ],
+      });
       if (!chat) {
-        chat = new ChatModel({ chats: [], user1: user.userName, user2: "" });
-      } else {
-        chat.user2 = user.userName;
+        chat = new ChatModel({
+          chats: [],
+          user1: user.userName,
+          user2: data.userName,
+        });
       }
       if (!contacts) {
         let contact = new ContactModel({
