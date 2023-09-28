@@ -5,7 +5,11 @@ const http = require("http");
 const app = express();
 const server = http.createServer(app);
 const { Server } = require("socket.io");
-const io = new Server(server);
+const io = new Server(server, {
+  cors: {
+    origin: "https://webrtc-be.onrender.com/",
+  },
+});
 const cors = require("cors");
 const userRouter = require("./src/Routes/UserRoute.js");
 const socketController = require("./src/SocketControllers/Controller.js");
