@@ -1,6 +1,7 @@
 const UsersModel = require("../src/Models/UserModel");
 const bcryptjs = require("bcryptjs");
 const jsonwebtoken = require("jsonwebtoken");
+const config = require('../config/config');
 
 const authUser = async (userName, password) => {
   const user = await UsersModel.findOne({ userName });
@@ -15,7 +16,7 @@ const authUser = async (userName, password) => {
 };
 
 const getAuthToken = async (user) => {
-  const token = jsonwebtoken.sign({ _id: user._id }, process.env.JWT_SECRET, {
+  const token = jsonwebtoken.sign({ _id: user._id }, config.JWT_SECRET, {
     expiresIn: "2 weeks",
   });
   return token;
@@ -27,7 +28,7 @@ const authToken = async (req, res, next) => {
       throw new Error();
     }
     const token = req.header("authToken").replace("ChAp ", "");
-    const decoded = jsonwebtoken.verify(token, process.env.JWT_SECRET);
+    const decoded = jsonwebtoken.verify(token, config.JWT_SECRET);
     const user = await UsersModel.findOne({ _id: decoded._id });
 
     if (!user) {

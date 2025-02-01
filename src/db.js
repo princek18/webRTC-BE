@@ -1,3 +1,4 @@
 const mongoose = require("mongoose");
+const config = require('../config/config');
 
-mongoose.connect(process.env.MONGOOSE_URL);
+mongoose.connect(config.MONGOOSE_URL);

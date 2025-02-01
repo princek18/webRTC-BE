@@ -1,5 +1,6 @@
 const ChatModel = require("../Models/ChatModel");
 const ContactModel = require("../Models/ContactModel");
+const config = require('../../config/config');
 const UsersModel = require("../Models/UserModel");
 const jsonwebtoken = require("jsonwebtoken");
 const contactsController = require("./ContactsController");
@@ -10,7 +11,7 @@ const socketController = async (socket) => {
   if (socket.handshake.query && socket.handshake.query.authToken) {
     let token = socket.handshake.query.authToken;
     token = token.replace("ChAp ", "");
-    const decoded = jsonwebtoken.verify(token, process.env.JWT_SECRET);
+    const decoded = jsonwebtoken.verify(token, config.JWT_SECRET);
     const user = await UsersModel.findOne({ _id: decoded._id });
 
     if (!user) {

@@ -1,4 +1,5 @@
 require("./src/db.js");
+const config = require('./config/config.js');
 const bodyParser = require("body-parser");
 const express = require("express");
 const http = require("http");
@@ -26,6 +27,6 @@ app.use(userRouter);
 
 io.on("connection", socketController);
 
-server.listen(process.env.PORT, () => {
-  console.log(`Server Started on ${process.env.PORT}`);
+server.listen(config.PORT, () => {
+  console.log(`Server Started on ${config.PORT}`);
 });
